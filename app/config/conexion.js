@@ -1,15 +1,21 @@
 const mongoose = require('mongoose');
-const config=require('./configuracion')
+const CONFIG = require('./config');
 
-module.exports={
-    connection:null,
-    connet : ()=>{
-        if(this.connection)return this.connection;
-        return mongoose.connect(config.DB)
-        .then(conn=>{
-            this.connection=conn;
-            console.log('Conectado a la base de datos')
-        })
-        .catch(e => console.log('error en la conexion',e))
-    }
-}
+module.exports = {
+  connection: null,
+  connect: function () {
+    if (this.connection) return this.connection;
+
+    return mongoose.connect(process.env.MONGO_URL || CONFIG.DB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(conn => {
+      this.connection = conn;
+      console.log('Conexión a MongoDB realizada con éxito');
+    })
+    .catch(e => {
+      console.error('Error en la conexión:', e);
+    });
+  },
+};
