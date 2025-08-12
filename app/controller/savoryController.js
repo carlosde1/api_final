@@ -12,7 +12,6 @@ function buscarTodo(req,res) {
 }
 
 function agregar(req,res) {
-    //console.log(req.body)
     new savoryModelPedidos(req.body).save()
     .then(info =>{
         return res.status(200).send({mensaje:"Se guardo con exito",info})
